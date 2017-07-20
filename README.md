@@ -20,7 +20,10 @@ with these additional goals in mind:
 
 ## To Not Do (yet)
 - Tab tree. Having a tab tree is not currently possible
-  (missing [openerTabId support in firefox](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/Tab#Browser_compatibility)), however it might be a desirable feature in the future
+  (missing [openerTabId support in firefox](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/Tab#Browser_compatibility)), however it might be a desirable feature in the future.
+- Proper "tab is loaded/unloaded" support. Currently, the extension only tracks
+  the loading of tabs from the moment the extension is loaded, so tabs that
+  have been loaded before but not selected appear as unloaded.
 
 
 # License
