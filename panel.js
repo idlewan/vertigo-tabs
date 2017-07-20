@@ -7,16 +7,17 @@ var loaded = {}
 var current_tab_id = null
 //var tabs = []
 var tabs_by_id = {}
+var detached_tabs = {}   // maps which detached tab refers to which real tab
+var probable_parents = {}
 
 function on_tab_click(e) {
     id = parseInt(this.dataset.id)
     browser.tabs.update(id, {active: true}).then((tab) => {
-        console.log(tab)
+        //console.log("click on tab", tab)
     })
 }
 
 function create_li(tab) {
-    console.info("create_li:", tab)
     var li = $create("li")
 
     li.dataset.id = tab.id
@@ -48,14 +49,11 @@ function create_li(tab) {
     title.textContent = tab.title
     li.appendChild(title)
     li.addEventListener("click", on_tab_click)
-    console.info("create_li end")
     return li
 }
 
-function update_content() {
-    console.info("update_content")
+function fill_content() {
     browser.tabs.query({windowId: window_id}).then((window_tabs) => {
-        console.log(window_tabs)
         $container.textContent = ""
         //tabs = []
         tabs_by_id = {}
@@ -67,23 +65,33 @@ function update_content() {
     })
 }
 
-function on_remove_tab(tabId) {
+function on_remove_tab(tabId, windowInfo) {
+    if (window_id != windowInfo.windowId) {
+        return
+    }
     console.info("on_remove_tab", current_tab_id, tabId)
     if (current_tab_id == tabId) {
         current_tab_id = null
     }
     var $tab = tabs_by_id[tabId]
+    if (!$tab && detached_tabs[tabId]) {
+        // tab isn't in the list because it's detached, remove its linked tab
+        $tab = tabs_by_id[detached_tabs[tabId]]
+    }
     $tab.remove()
     delete tabs_by_id[tabId]
 }
 
 function on_update_tab(tabId, changes, state) {
-    console.info("on_update tab:", tabId)
-    console.log(tabs_by_id)
+    if (window_id != state.windowId) {
+        return  // doesn't concert this window
+    }
+
     var $tab = tabs_by_id[tabId]
-    console.log($tab)
-    console.info("changes:", changes)
-    console.info("state:", state)
+    if (!$tab) {
+        //console.error("Tab hasn't been created yet? on_update_tab can't proceed")
+        return  // nothing we can do, tab hasn't been created yet
+    }
     favicon = $tab.children[0]
     if (changes.status == "loading") {
         favicon.src = "loading_bars_2.png"
@@ -104,27 +112,25 @@ function on_update_tab(tabId, changes, state) {
 
 function insert_tab_at(index, tab) {
     var $tabs = $container.querySelectorAll(".tab")
-    if ($tabs.length <= index) {
-        $container.appendChild(tab)
-        console.log("mtfkr", $tabs.length, index)
-    } else {
-        console.log("noshit")
-        $container.insertBefore(tab, $tabs[index])
-    }
+    $container.insertBefore(tab, $tabs[index])
 }
 
 function on_create_tab(tab) {
-    console.info("on_create_tab:", tab)
+    if (window_id != tab.windowId) {
+        return
+    }
+    probable_parents[tab.id] = current_tab_id
+    //console.info("on_create_tab", tab)
     if (tab.highlighted) {
         unhighlight_current_tab()
     }
     loaded[tab.id] = true
     var li = create_li(tab)
     insert_tab_at(tab.index, li)
+    tabs_by_id[tab.id] = li
 }
 
 function on_moved_tab(tabId, opts) {
-    console.info("on_moved:", tabId, opts)
     var $tab = tabs_by_id[tabId]
     var new_index = opts.toIndex
     if (opts.fromIndex < new_index) {
@@ -135,56 +141,83 @@ function on_moved_tab(tabId, opts) {
 
 function unhighlight_current_tab() {
     if (current_tab_id) {
-        console.info("has_previous current_tab_id:", current_tab_id)
+        //console.info("unhighlight_current_tab", current_tab_id)
         var $tab = tabs_by_id[current_tab_id]
         $tab.classList.remove("highlighted")
     }
 }
 
 function change_current_tab(active_info) {
+    if (window_id != active_info.windowId) {
+        return
+    }
+
     let new_current_id = active_info.tabId
-    console.info("change_current_tab", new_current_id)
-    //let $tabs = $container.querySelectorAll(".tab")
+    loaded[new_current_id] = true
+
+    if (detached_tabs[new_current_id]) {
+        new_current_id = detached_tabs[new_current_id]
+    }
+
+    // current active tab
+    var $tab = tabs_by_id[new_current_id]
+    if (!$tab) {
+        //console.error("ABORT change_current_tab")
+        //console.info("new:", new_current_id, tabs_by_id[new_current_id])
+        //console.info("old:", current_tab_id, tabs_by_id[current_tab_id])
+        return  // abort, maybe a tab detached or something
+    }
 
     // previous active tab
     unhighlight_current_tab()
 
-    // current active tab
-    var $tab = tabs_by_id[new_current_id]
     $tab.classList.add("highlighted")
     $tab.classList.add("loaded")
-    loaded[new_current_id] = true
+
     current_tab_id = new_current_id
-    console.log("change_current_tab ended well")
 }
 
 function on_detach_tab(tabId, opts) {
+    if (opts.oldWindowId != window_id) {
+        return  // doesn't concern this window
+    }
+    //console.info("on_detach_tab", tabId, opts)
     var $tabs = $container.querySelectorAll(".tab")
     li = $tabs[opts.oldPosition]
     tabs_by_id[tabId] = li
+    if (li) {
+        $container.removeChild(li) // li might not have been inserted
+    }
+
+    // last tab switched to is probably the current one
+    var probable_parent = probable_parents[tabId]
+    if (detached_tabs[tabId]) {
+        probable_parent = detached_tabs[tabId]
+    }
+    if (!probable_parent) {
+        // no new tab has been created, so current tab is best heuristic
+        probable_parent = current_tab_id
+    }
+    detached_tabs[tabId] = probable_parent
+    //console.log("PROBABLE PARENT USED:", probable_parent)
 }
 
 function attach_logger(event_prop) {
-    function listener(arg1, arg2) {
-        console.debug(event_prop, arg1, arg2)
+    function listener(arg1, arg2, arg3) {
+        console.debug(event_prop, arg1, arg2, arg3)
     }
-    console.log("adding logging for:", event_prop)
     browser.tabs[event_prop].addListener(listener)
 }
 
 const to_log = [
     "onActivated", "onAttached", "onCreated",
-    "onDetached", "onHighlighted", "onMoved", "onReplaced",
+    "onDetached", "onMoved", "onReplaced", "onRemoved",
     "onUpdated", "onZoomChange"
+    //"onHighlighted",
 ]
-to_log.forEach(attach_logger)
+//to_log.forEach(attach_logger)
 
 
-/*browser.tabs.onAttached.addListener(update_content)
-browser.tabs.onCreated.addListener(update_content)
-browser.tabs.onDetached.addListener(update_content)
-browser.tabs.onMoved.addListener(update_content)
-browser.tabs.onReplaced.addListener(update_content)*/
 browser.tabs.onUpdated.addListener(on_update_tab)
 
 browser.tabs.onActivated.addListener(change_current_tab)
@@ -195,9 +228,9 @@ browser.tabs.onCreated.addListener(on_create_tab)
 browser.tabs.onMoved.addListener(on_moved_tab)
 
 browser.tabs.onDetached.addListener(on_detach_tab)
-browser.tabs.onAttached.addListener(on_detach_tab)
+//browser.tabs.onAttached.addListener(on_detach_tab)
 
 browser.windows.getCurrent().then((window_info) => {
     window_id = window_info.id
-    update_content()
+    fill_content()
 })
