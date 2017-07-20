@@ -1,0 +1,52 @@
+body
+  background Window
+  color MenuText
+
+#tabs
+  margin 0
+  padding 0
+  padding-top 3px
+
+.tab
+  display flex
+  width 100%
+  padding 1px 6px
+  list-style none
+  //opacity 0.9
+
+.favicon
+  width 16px
+  height 16px
+  display inline-block
+  margin-right 8px
+  opacity 0.7
+  will-change transform
+
+span
+  white-space nowrap
+  text-overflow ellipsis
+  overflow hidden
+  align-self center
+  color GrayText
+
+.loaded
+  //color black
+  //opacity 1
+  > .favicon
+    opacity 1
+  > span
+    color MenuText
+
+.highlighted
+  background-color Highlight
+  > span
+    color HighlightText
+
+.spinning
+  animation spin 2s steps(4, end) infinite
+
+@keyframes spin
+  from
+    transform rotate(0deg) rotateZ(360deg)
+  to
+    transform rotate(360deg) rotateZ(360deg)
