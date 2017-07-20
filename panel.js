@@ -73,7 +73,7 @@ function on_remove_tab(tabId, windowInfo) {
     if (window_id != windowInfo.windowId) {
         return
     }
-    console.info("on_remove_tab", current_tab_id, tabId)
+    //console.info("on_remove_tab", current_tab_id, tabId)
     if (current_tab_id == tabId) {
         current_tab_id = null
     }
