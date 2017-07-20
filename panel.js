@@ -35,14 +35,18 @@ function create_li(tab) {
         current_tab_id = tab.id
     }
 
-    var favicon = $create("img")
-    if (tab.favIconUrl) {
-        favicon.src = tab.favIconUrl
-    } else {
-        favicon.src = "no_favicon.png"
-        //var favicon = $create("div")
-    }
+    var favicon = $create("div")
     favicon.className = "favicon"
+    var img = $create("img")
+    if (tab.favIconUrl) {
+        img.src = tab.favIconUrl
+        img.onerror = () => {
+            favicon.classList.add("no-favicon")
+        }
+    } else {
+        favicon.classList.add("no-favicon")
+    }
+    favicon.appendChild(img)
     li.appendChild(favicon)
 
     var title = $create("span")
@@ -94,19 +98,18 @@ function on_update_tab(tabId, changes, state) {
     }
     favicon = $tab.children[0]
     if (changes.status == "loading") {
-        favicon.src = "loading_bars_2.png"
-        //favicon.classList.add("spinning")
+        favicon.children[0].src = "loading.png"
+        favicon.classList.remove("no-favicon")
     }
     if (changes.title) {
         $tab.children[1].textContent = changes.title
     }
     if (changes.status == "complete") {
         if (state.favIconUrl) {
-            favicon.src = state.favIconUrl
+            favicon.children[0].src = state.favIconUrl
         } else {
-            favicon.src = "no_favicon.png"
+            favicon.classList.add("no-favicon")
         }
-        favicon.classList.remove("spinning")
     }
 }
 
