@@ -1,5 +1,6 @@
 const $create = document.createElement.bind(document)
 
+document.addEventListener("contextmenu", event => event.preventDefault())
 const $container = document.querySelector("#tabs")
 var window_id;
 var loaded = {}
