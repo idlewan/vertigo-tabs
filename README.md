@@ -1,4 +1,4 @@
-# Vertigo tabs
+# ![icon](icon48.png "Vertigo tabs") Vertigo tabs
 This WebExtension is a vertical tab list using the new Sidebar API in Firefox.
 It has not been tested on other browsers.
 
