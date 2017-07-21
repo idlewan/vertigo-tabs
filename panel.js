@@ -8,7 +8,6 @@ var current_tab_id = null
 //var tabs = []
 var tabs_by_id = {}
 var detached_tabs = {}   // maps which detached tab refers to which real tab
-var probable_parents = {}
 
 function on_tab_click(e) {
     id = parseInt(this.dataset.id)
@@ -122,7 +121,6 @@ function on_create_tab(tab) {
     if (window_id != tab.windowId) {
         return
     }
-    probable_parents[tab.id] = current_tab_id
     //console.info("on_create_tab", tab)
     if (tab.highlighted) {
         unhighlight_current_tab()
@@ -159,6 +157,8 @@ function change_current_tab(active_info) {
     loaded[new_current_id] = true
 
     if (detached_tabs[new_current_id]) {
+        //console.info("USING DETACHED TAB: from", new_current_id,
+        //             " to ", detached_tabs[new_current_id])
         new_current_id = detached_tabs[new_current_id]
     }
 
@@ -192,17 +192,10 @@ function on_detach_tab(tabId, opts) {
         $container.removeChild(li) // li might not have been inserted
     }
 
-    // last tab switched to is probably the current one
-    var probable_parent = probable_parents[tabId]
-    if (detached_tabs[tabId]) {
-        probable_parent = detached_tabs[tabId]
-    }
-    if (!probable_parent) {
-        // no new tab has been created, so current tab is best heuristic
-        probable_parent = current_tab_id
-    }
-    detached_tabs[tabId] = probable_parent
-    //console.log("PROBABLE PARENT USED:", probable_parent)
+    // detached tab's parent is current_tab when opening responsive mode,
+    // and itself when tab is moved (doesn't support moving tabs
+    // without them being selected yet anyway)
+    detached_tabs[tabId] = current_tab_id
 }
 
 function attach_logger(event_prop) {
