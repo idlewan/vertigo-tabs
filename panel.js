@@ -207,7 +207,16 @@ function on_detach_tab(tabId, opts) {
 
 function attach_logger(event_prop) {
     function listener(arg1, arg2, arg3) {
-        console.debug(event_prop, arg1, arg2, arg3)
+        var windowId = arg1.windowId
+        if (!windowId && arg2) {
+            windowId = arg2.windowId
+        }
+        if (!windowId && arg3) {
+            windowId = arg3.windowId
+        }
+        if (!windowId || windowId == window_id) {
+            console.debug(event_prop, arg1, arg2, arg3)
+        }
     }
     browser.tabs[event_prop].addListener(listener)
 }
