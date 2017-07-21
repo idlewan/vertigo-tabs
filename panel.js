@@ -31,6 +31,7 @@ function create_li(tab) {
         li.classList.add("loaded")
     }
     if (tab.active) {
+        unhighlight_current_tab()
         current_tab_id = tab.id
     }
 
@@ -198,6 +199,17 @@ function on_detach_tab(tabId, opts) {
     detached_tabs[tabId] = current_tab_id
 }
 
+function on_attach_tab(tabId, opts) {
+    if (opts.newWindowId != window_id) {
+        return  // doesn't concern this window
+    }
+    browser.tabs.get(tabId).then((tab) => {
+        let li = create_li(tab)
+        insert_tab_at(opts.newPosition, li)
+        tabs_by_id[tab.id] = li
+    })
+}
+
 function attach_logger(event_prop) {
     function listener(arg1, arg2, arg3) {
         var windowId = arg1.windowId
@@ -233,7 +245,7 @@ browser.tabs.onCreated.addListener(on_create_tab)
 browser.tabs.onMoved.addListener(on_moved_tab)
 
 browser.tabs.onDetached.addListener(on_detach_tab)
-//browser.tabs.onAttached.addListener(on_detach_tab)
+browser.tabs.onAttached.addListener(on_attach_tab)
 
 browser.windows.getCurrent().then((window_info) => {
     window_id = window_info.id
