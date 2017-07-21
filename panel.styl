@@ -5,7 +5,6 @@ body
 #tabs
   margin 0
   padding 0
-  padding-top 3px
 
 .tab
   display flex
@@ -39,7 +38,7 @@ body
     transform translateX(-50%) translateY(-50%)
     width 4px
     height 4px
-    background-color HighlightText
+    background-color MenuText
   > img
     display none
 
@@ -60,3 +59,7 @@ span
   background-color Highlight
   > span
     color HighlightText
+
+.highlighted
+  .no-favicon:before
+    background-color HighlightText
