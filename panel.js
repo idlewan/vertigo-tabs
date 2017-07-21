@@ -133,7 +133,11 @@ function on_create_tab(tab) {
 }
 
 function on_moved_tab(tabId, opts) {
-    var $tab = tabs_by_id[tabId]
+    if (window_id != opts.windowId) {
+        return  // doesn't concern this window
+    }
+    var parent_id = detached_tabs[tabId]
+    var $tab = tabs_by_id[parent_id] || tabs_by_id[tabId]
     var new_index = opts.toIndex
     if (opts.fromIndex < new_index) {
         new_index += 1
