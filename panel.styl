@@ -48,6 +48,20 @@ span
   overflow hidden
   align-self center
   color GrayText
+  flex 1
+
+.audible > .soundicon
+  content ' '
+  display block
+  flex none
+  //align-self center
+  width 1.4em
+  height 1.4em
+  background-color MenuText
+  mask url(tab-audio-playing.svg)
+
+.audible.muted > .soundicon
+  mask url(tab-audio-muted.svg)
 
 .loaded
   > .favicon

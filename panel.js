@@ -15,6 +15,24 @@ function on_tab_click(e) {
         //console.log("click on tab", tab)
     })
 }
+function on_sound_icon_click(e) {
+    id = parseInt(this.parentNode.dataset.id)
+    var muted = false
+    browser.tabs.get(id).then((tab) => {
+        muted = !tab.mutedInfo.muted
+        browser.tabs.update(id, {muted: muted})
+    })
+    e.stopPropagation()
+}
+
+function ensure_sound_icon_is_present($tab) {
+    if ($tab.children.length != 3) {
+        var icon = document.createElement("div")
+        icon.className = "soundicon"
+        $tab.appendChild(icon)
+        icon.addEventListener("click", on_sound_icon_click)
+    }
+}
 
 function create_li(tab) {
     var li = $create("li")
@@ -52,6 +70,14 @@ function create_li(tab) {
     var title = $create("span")
     title.textContent = tab.title
     li.appendChild(title)
+
+    if (tab.mutedInfo.reason || tab.audible) {
+        ensure_sound_icon_is_present(li)
+    }
+    if (tab.audible) {
+        li.classList.add("audible")
+    }
+
     li.addEventListener("click", on_tab_click)
     return li
 }
@@ -104,6 +130,23 @@ function on_update_tab(tabId, changes, state) {
     if (changes.title) {
         $tab.children[1].textContent = changes.title
     }
+    if (typeof changes.audible != 'undefined') {
+        ensure_sound_icon_is_present($tab)
+        if (changes.audible) {
+            $tab.classList.add("audible")
+        } else if (state.mutedInfo.muted == false) {
+            $tab.classList.remove("audible")
+        }
+    }
+    if (changes.mutedInfo) {
+        ensure_sound_icon_is_present($tab)
+        if (changes.mutedInfo.muted) {
+            $tab.classList.add("muted")
+        } else {
+            $tab.classList.remove("muted")
+        }
+    }
+
     if (changes.status == "complete") {
         if (state.favIconUrl) {
             favicon.children[0].src = state.favIconUrl

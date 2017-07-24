@@ -19,7 +19,6 @@ with these additional goals in mind:
 ## To Do
 - Drag and drop support in-window and between windows. Pull requests welcome :)
 - Middle click on a tab to close it
-- Sound icon on tabs that are playing sound
 
 ## To Not Do (yet)
 - Tab tree. Having a tab tree is not currently possible
