@@ -18,13 +18,24 @@ with these additional goals in mind:
 
 ## To Do
 - Drag and drop support in-window and between windows. Pull requests welcome :)
-- Middle click on a tab to close it
+- Style customization. Bigger tabs, border between them, close button... This
+  would need an option page to be implemented beforehand. Motivated people,
+  please jump in.
 
 ## To Not Do (yet)
+- Middle click on a tab to close it. I couldn't find how to fire/listen to middle
+  click events on a web page on my current system, please open an
+  issue/pull request if you have some patch or standalone test case working.
+- Hide the original horizontal tab bar by default. Waiting on
+  [bugzilla#1332447](https://bugzilla.mozilla.org/show_bug.cgi?id=1332447).
+  Current workaround: add `#TabsToolbar {visibility: collapse;}` to
+  `[your_ffox_profile_dir]/chrome/userChrome.css`
 - Tab tree. Having a tab tree is not currently possible
   (missing [openerTabId support in firefox](
   https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/Tab#Browser_compatibility)),
-  however it might be a desirable feature in the future.
+  however it might be a desirable feature in the future. Waiting on
+  [bugzilla#1238314](https://bugzilla.mozilla.org/show_bug.cgi?id=1238314) and
+  [bugzilla#1322060](https://bugzilla.mozilla.org/show_bug.cgi?id=1322060).
 - Proper "tab is loaded/unloaded" support. Currently, the extension only tracks
   the loading of tabs from the moment the extension is loaded, so tabs that
   have been loaded before but not selected appear as unloaded.
