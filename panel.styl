@@ -1,6 +1,12 @@
+$bg-color = -moz-Field
+$text-color = -moz-FieldText
+$bg-color-highlighted = Highlight
+$text-color-highlighted = HighlightText
+$text-color-inactive = GrayText
+
 body
-  background Window
-  color MenuText
+  background-color $bg-color
+  color $text-color
 
 #tabs
   margin 0
@@ -38,7 +44,7 @@ body
     transform translateX(-50%) translateY(-50%)
     width 4px
     height 4px
-    background-color MenuText
+    background-color $text-color
   > img
     display none
 
@@ -47,7 +53,7 @@ span
   text-overflow ellipsis
   overflow hidden
   align-self center
-  color GrayText
+  color $text-color-inactive
   flex 1
 
 .audible > .soundicon
@@ -57,7 +63,7 @@ span
   //align-self center
   width 1.4em
   height 1.4em
-  background-color MenuText
+  background-color $text-color
   mask url(tab-audio-playing.svg)
 
 .audible.muted > .soundicon
@@ -67,15 +73,15 @@ span
   > .favicon
     opacity 1
   > span
-    color MenuText
+    color $text-color
 
 .highlighted
-  background-color Highlight
+  background-color $bg-color-highlighted
   > span
-    color HighlightText
+    color $text-color-highlighted
   > .soundicon
-    background-color HighlightText
+    background-color $text-color-highlighted
 
 .highlighted
   .no-favicon:before
-    background-color HighlightText
+    background-color $text-color-highlighted
