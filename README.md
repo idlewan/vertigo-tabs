@@ -22,6 +22,7 @@ with these additional goals in mind:
   would need an option page to be implemented beforehand. Motivated people,
   please jump in.
 - Scroll current tab into view when changing tabs
+- Scroll to have new tab into view when opening new tabs
 
 ## To Not Do (yet)
 - Middle click on a tab to close it. I couldn't find how to fire/listen to middle
