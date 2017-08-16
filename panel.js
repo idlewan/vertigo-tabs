@@ -178,6 +178,7 @@ function on_create_tab(tab) {
     var li = create_li(tab)
     insert_tab_at(tab.index, li)
     tabs_by_id[tab.id] = li
+    li.scrollIntoView({behavior: "smooth"})
 }
 
 function on_moved_tab(tabId, opts) {
@@ -229,6 +230,7 @@ function change_current_tab(active_info) {
 
     $tab.classList.add("highlighted")
     $tab.classList.add("loaded")
+    $tab.scrollIntoView({behavior: "smooth"})
 
     current_tab_id = new_current_id
 }

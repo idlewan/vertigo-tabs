@@ -21,8 +21,6 @@ with these additional goals in mind:
 - Style customization. Bigger tabs, border between them, close button... This
   would need an option page to be implemented beforehand. Motivated people,
   please jump in.
-- Scroll current tab into view when changing tabs
-- Scroll to have new tab into view when opening new tabs
 
 ## To Not Do (yet)
 - Hide the original horizontal tab bar by default. Waiting on
