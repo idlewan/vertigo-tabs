@@ -11,6 +11,11 @@ var detached_tabs = {}   // maps which detached tab refers to which real tab
 
 function on_tab_click(e) {
     let id = parseInt(this.dataset.id)
+    if (e.buttons === 4) { // if middle click
+        browser.tabs.remove(id)  // close the tab
+        return
+    }
+    // switch to clicked tab
     browser.tabs.update(id, {active: true}).then((tab) => {
         //console.log("click on tab", tab)
     })
@@ -78,7 +83,7 @@ function create_li(tab) {
         li.classList.add("audible")
     }
 
-    li.addEventListener("click", on_tab_click)
+    li.addEventListener("mousedown", on_tab_click)
     return li
 }
 

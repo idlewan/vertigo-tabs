@@ -25,9 +25,6 @@ with these additional goals in mind:
 - Scroll to have new tab into view when opening new tabs
 
 ## To Not Do (yet)
-- Middle click on a tab to close it. I couldn't find how to fire/listen to middle
-  click events on a web page on my current system, please open an
-  issue/pull request if you have some patch or standalone test case working.
 - Hide the original horizontal tab bar by default. Waiting on
   [bugzilla#1332447](https://bugzilla.mozilla.org/show_bug.cgi?id=1332447).
   Current workaround: add `#TabsToolbar {visibility: collapse;}` to
