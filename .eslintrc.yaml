@@ -1,0 +1,15 @@
+---
+extends: eslint:recommended
+
+rules:
+  semi:
+    - error
+    - never
+  no-extra-semi: 2
+  no-tabs: error
+  no-unused-vars: warn
+
+env:
+  es6: true
+  browser: true
+  webextensions: true

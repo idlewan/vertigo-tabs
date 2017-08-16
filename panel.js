@@ -2,7 +2,7 @@ const $create = document.createElement.bind(document)
 
 document.addEventListener("contextmenu", event => event.preventDefault())
 const $container = document.querySelector("#tabs")
-var window_id;
+var window_id
 var loaded = {}
 var current_tab_id = null
 //var tabs = []
@@ -10,13 +10,13 @@ var tabs_by_id = {}
 var detached_tabs = {}   // maps which detached tab refers to which real tab
 
 function on_tab_click(e) {
-    id = parseInt(this.dataset.id)
+    let id = parseInt(this.dataset.id)
     browser.tabs.update(id, {active: true}).then((tab) => {
         //console.log("click on tab", tab)
     })
 }
 function on_sound_icon_click(e) {
-    id = parseInt(this.parentNode.dataset.id)
+    let id = parseInt(this.parentNode.dataset.id)
     var muted = false
     browser.tabs.get(id).then((tab) => {
         muted = !tab.mutedInfo.muted
@@ -122,7 +122,7 @@ function on_update_tab(tabId, changes, state) {
         //console.error("Tab hasn't been created yet? on_update_tab can't proceed")
         return  // nothing we can do, tab hasn't been created yet
     }
-    favicon = $tab.children[0]
+    let favicon = $tab.children[0]
     if (changes.status == "loading") {
         favicon.children[0].src = "loading.png"
         favicon.classList.remove("no-favicon")
@@ -130,7 +130,7 @@ function on_update_tab(tabId, changes, state) {
     if (changes.title) {
         $tab.children[1].textContent = changes.title
     }
-    if (typeof changes.audible != 'undefined') {
+    if (typeof changes.audible != "undefined") {
         ensure_sound_icon_is_present($tab)
         if (changes.audible) {
             $tab.classList.add("audible")
@@ -234,7 +234,7 @@ function on_detach_tab(tabId, opts) {
     }
     //console.info("on_detach_tab", tabId, opts)
     var $tabs = $container.querySelectorAll(".tab")
-    li = $tabs[opts.oldPosition]
+    let li = $tabs[opts.oldPosition]
     tabs_by_id[tabId] = li
     if (li) {
         $container.removeChild(li) // li might not have been inserted
@@ -257,6 +257,7 @@ function on_attach_tab(tabId, opts) {
     })
 }
 
+// eslint-disable-next-line no-unused-vars
 function attach_logger(event_prop) {
     function listener(arg1, arg2, arg3) {
         var windowId = arg1.windowId
@@ -267,12 +268,14 @@ function attach_logger(event_prop) {
             windowId = arg3.windowId
         }
         if (!windowId || windowId == window_id) {
+            // eslint-disable-next-line no-console
             console.debug(event_prop, arg1, arg2, arg3)
         }
     }
     browser.tabs[event_prop].addListener(listener)
 }
 
+// eslint-disable-next-line no-unused-vars
 const to_log = [
     "onActivated", "onAttached", "onCreated",
     "onDetached", "onMoved", "onReplaced", "onRemoved",
