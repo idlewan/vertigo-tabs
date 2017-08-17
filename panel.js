@@ -59,11 +59,11 @@ function create_li(tab) {
     var favicon = $create("div")
     favicon.className = "favicon"
     var img = $create("img")
+    img.onerror = function () {
+        favicon.classList.add("no-favicon")
+    }
     if (tab.favIconUrl) {
         img.src = tab.favIconUrl
-        img.onerror = () => {
-            favicon.classList.add("no-favicon")
-        }
     } else {
         favicon.classList.add("no-favicon")
     }
