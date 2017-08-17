@@ -5,7 +5,6 @@ const $container = document.querySelector("#tabs")
 var window_id
 var loaded = {}
 var current_tab_id = null
-//var tabs = []
 var tabs_by_id = {}
 var detached_tabs = {}   // maps which detached tab refers to which real tab
 
@@ -16,9 +15,8 @@ function on_tab_click(e) {
         return
     }
     // switch to clicked tab
-    browser.tabs.update(id, {active: true}).then((tab) => {
-        //console.log("click on tab", tab)
-    })
+    browser.tabs.update(id, {active: true})
+    //.then((tab) => { console.log("click on tab", tab) })
 }
 function on_sound_icon_click(e) {
     let id = parseInt(this.parentNode.dataset.id)
@@ -91,12 +89,10 @@ function create_li(tab) {
 function fill_content() {
     browser.tabs.query({windowId: window_id}).then((window_tabs) => {
         $container.textContent = ""
-        //tabs = []
         tabs_by_id = {}
-        window_tabs.forEach((tab, i) => {
+        window_tabs.forEach((tab) => {
             var li = create_li(tab)
             $container.appendChild(li)
-            //tabs.push(li)
         })
     })
 }
