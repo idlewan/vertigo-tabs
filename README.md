@@ -17,10 +17,11 @@ with these additional goals in mind:
   It should just work.
 
 ## To Do
-- Drag and drop support in-window and between windows. Pull requests welcome :)
 - Style customization. Bigger tabs, border between them, close button... This
   would need an option page to be implemented beforehand. Motivated people,
   please jump in.
+- Drag and drop files (from the desktop or file manager) onto the sidebar.
+  Pull requests welcome :)
 
 ## To Not Do (yet)
 - Hide the original horizontal tab bar by default. Waiting on

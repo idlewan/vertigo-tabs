@@ -4,10 +4,14 @@ $bg-color-highlighted = Highlight
 $text-color-highlighted = HighlightText
 $text-color-inactive = GrayText
 
+html, body
+  min-height 100vh
+
 body
   background-color $bg-color
   color $text-color
   font menu
+  display flex
 
 #tabs
   margin 0
@@ -86,3 +90,14 @@ span
 .highlighted
   .no-favicon:before
     background-color $text-color-highlighted
+
+#drag-line
+  position absolute
+  top 0
+  left 0
+  display none
+  border-top dashed 1px $text-color
+  width 100%
+
+#empty-space
+  flex-grow 1

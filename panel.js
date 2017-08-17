@@ -83,6 +83,7 @@ function create_li(tab) {
         li.classList.add("audible")
     }
 
+    add_drag_events(li)
     li.addEventListener("mousedown", on_tab_click)
     return li
 }
@@ -308,3 +309,85 @@ browser.windows.getCurrent().then((window_info) => {
     window_id = window_info.id
     fill_content()
 })
+
+
+//---------- Drag & Drop tabs on the sidebar ----------
+//=====================================================
+const $dragline = document.querySelector("#drag-line")
+const $emptyspace = document.querySelector("#empty-space")
+
+function add_drag_events($el) {
+    $el.setAttribute("draggable", "true")
+    $el.addEventListener("dragstart", on_drag_start)
+    $el.addEventListener("dragend", on_drag_end)
+    $el.addEventListener("dragenter", on_drag_enter)
+    $el.addEventListener("dragover", on_drag_over)
+    $el.addEventListener("drop", on_drop)
+}
+
+function on_drag_start(e) {
+    let tab_index = [].indexOf.call($container.children, this)
+    let data = this.dataset.id + "|" + tab_index + "&" + window_id
+    e.dataTransfer.setData("tab/id", data)
+    e.effectAllowed = "move"
+}
+
+// position the dotted line indicating a drop where would insert the tab
+function on_drag_enter(e) {
+    e.preventDefault()
+    var line_y = window.scrollY
+    if (this === $emptyspace) {
+        let $tabs = $container.querySelectorAll(".tab")
+        let sizing_info = $tabs[$tabs.length - 1].getBoundingClientRect()
+        line_y += sizing_info.bottom
+    } else {
+        let sizing_info = this.getBoundingClientRect()
+        line_y += sizing_info.top
+    }
+    $dragline.style.display = "block"
+    $dragline.style.top = line_y + "px"
+}
+
+function on_drop(e) {
+    e.preventDefault()
+
+    let data = e.dataTransfer.getData("tab/id")
+    let sep_index = data.indexOf("|")
+    let sep2_index = data.indexOf("&")
+
+    let tab_to_move_id = parseInt(data.substring(0, sep_index))
+    let tab_to_move_index = parseInt(data.substring(sep_index + 1, sep2_index))
+    let origin_window = parseInt(data.substring(sep2_index + 1))
+
+    if (this === $emptyspace) {
+        var index = $container.querySelectorAll(".tab").length
+        browser.tabs.move(tab_to_move_id, {index: index, windowId: window_id})
+        //console.info("drop emptyspace", index, "window:", window_id)
+    } else {
+        var destination_tab = parseInt(this.dataset.id)
+        browser.tabs.get(destination_tab).then((tab) => {
+            let index = tab.index
+            if (window_id === origin_window && tab_to_move_index < index) {
+                index -= 1
+            }
+            browser.tabs.move(tab_to_move_id,
+                              {index: index, windowId: window_id})
+        })
+        //console.info("drop tab", tab_to_move_id, "to:", destination_tab,
+        //             "window:", window_id)
+    }
+    // hide dragline in the context/window where the tab is dropped
+    $dragline.style.display = "none"
+}
+
+function on_drag_over(e) {
+    e.preventDefault()
+}
+
+function on_drag_end() {
+    // hide dragline in the context/window where the tab is from
+    $dragline.style.display = "none"
+}
+$emptyspace.addEventListener("dragenter", on_drag_enter)
+$emptyspace.addEventListener("dragover", on_drag_over)
+$emptyspace.addEventListener("drop", on_drop)
