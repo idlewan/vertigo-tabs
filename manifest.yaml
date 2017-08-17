@@ -2,10 +2,21 @@ manifest_version: 2
 name: Vertigo Tabs
 author: Erwan Ameil
 homepage_url: https://github.com/idlewan/vertigo-tabs
-version: '0.5'
+version: '1.0'
 
 description: >
   Vertical tab bar for Firefox 57+
+
+  Goal of this extension:
+    - respect the user's system theme (colors, font sizes)
+    - should just work => sane defaults. If possible, no configuration
+      should be necessary.
+
+  WebExtensions cannot automatically hide the horizontal tab bar for now.
+
+  The current workaround is to add `#TabsToolbar {visibility: collapse;}`
+  (without quotes) to the `[your_ffox_profile_dir]/chrome/userChrome.css` file
+  (create it and the `chrome` folder if necessary).
 
 icons:
   48: icon48.png
