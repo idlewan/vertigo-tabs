@@ -12,6 +12,7 @@ function on_tab_click(e) {
     let id = parseInt(this.dataset.id)
     if (e.buttons === 4) { // if middle click
         browser.tabs.remove(id)  // close the tab
+        e.preventDefault()
         return
     }
     // switch to clicked tab
