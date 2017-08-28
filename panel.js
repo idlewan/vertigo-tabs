@@ -86,6 +86,21 @@ function create_li(tab) {
     return li
 }
 
+function scroll_into_view($el) {
+    let visible_top_y = window.scrollY
+    let visible_bottom_y = visible_top_y + window.innerHeight
+
+    let sizing_info = $el.getBoundingClientRect()
+    let el_top_y = sizing_info.y + window.scrollY
+    let el_bottom_y = sizing_info.y + window.scrollY + sizing_info.height
+
+    if (el_bottom_y > visible_bottom_y) {
+        $el.scrollIntoView({behavior: "smooth", block: "end"})
+    } else if (el_top_y < visible_top_y) {
+        $el.scrollIntoView({behavior: "smooth", block: "start"})
+    }
+}
+
 function fill_content() {
     browser.tabs.query({windowId: window_id}).then((window_tabs) => {
         $container.textContent = ""
@@ -94,6 +109,8 @@ function fill_content() {
             var li = create_li(tab)
             $container.appendChild(li)
         })
+        let $current_tab = tabs_by_id[current_tab_id]
+        scroll_into_view($current_tab)
     })
 }
 
@@ -175,7 +192,7 @@ function on_create_tab(tab) {
     var li = create_li(tab)
     insert_tab_at(tab.index, li)
     tabs_by_id[tab.id] = li
-    li.scrollIntoView({behavior: "smooth"})
+    scroll_into_view(li)
 }
 
 function on_moved_tab(tabId, opts) {
@@ -227,7 +244,7 @@ function change_current_tab(active_info) {
 
     $tab.classList.add("highlighted")
     $tab.classList.add("loaded")
-    $tab.scrollIntoView({behavior: "smooth"})
+    scroll_into_view($tab)
 
     current_tab_id = new_current_id
 }
