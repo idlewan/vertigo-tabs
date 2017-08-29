@@ -2,6 +2,8 @@
 This WebExtension is a vertical tab list using the new Sidebar API in Firefox.
 It has not been tested on other browsers.
 
+https://addons.mozilla.org/en-US/firefox/addon/vertigo-tabs/
+
 # Goals
 From Firefox 57 onwards, only WebExtensions will work. Conversion of legacy
 add-ons isn't usually desirable, a re-write from scratch gets you closer to
@@ -22,6 +24,7 @@ with these additional goals in mind:
   please jump in.
 - Drag and drop files (from the desktop or file manager) onto the sidebar.
   Pull requests welcome :)
+- Scroll current tab into view when window is resized
 
 ## To Not Do (yet)
 - Hide the original horizontal tab bar by default. Waiting on
