@@ -43,6 +43,10 @@ with these additional goals in mind:
 - Animation of the "loading" favicon. CPU usage seems to go up by a substantial
   amount when having CSS animation displaying, so as long as this stays true,
   the loading favicon will not be spinning.
+- Customize shortcut to show/hide the sidebar. This will be possible when
+[bugzilla#1303384](https://bugzilla.mozilla.org/show_bug.cgi?id=1303384) and
+[bugzilla#1320332](https://bugzilla.mozilla.org/show_bug.cgi?id=1320332) receive
+some attention.
 
 
 # License

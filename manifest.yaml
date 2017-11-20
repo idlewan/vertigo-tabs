@@ -18,6 +18,10 @@ description: >
   (without quotes) to the `[your_ffox_profile_dir]/chrome/userChrome.css` file
   (create it and the `chrome` folder if necessary).
 
+  Ctrl+Y is the shortcut to open/close the sidebar from the keyboard.
+  This allows you to hide it when going fullscreen for exampe (not necessary for
+  fullscreen from videos/youtube, the sidebar already isn't shown).
+
 icons:
   48: icon48.png
   128: icon128.png
@@ -29,3 +33,8 @@ sidebar_action:
   default_icon: icon48.png
   default_title: Vertigo Tabs
   default_panel: panel.html
+
+commands:
+  _execute_sidebar_action:
+    suggested_key:
+      default: Ctrl+Y
