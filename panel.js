@@ -324,6 +324,11 @@ browser.windows.getCurrent().then((window_info) => {
     fill_content()
 })
 
+window.addEventListener("resize", event => {
+    let $current_tab = tabs_by_id[current_tab_id]
+    scroll_into_view($current_tab)
+})
+
 
 //---------- Drag & Drop tabs on the sidebar ----------
 //=====================================================
