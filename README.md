@@ -57,7 +57,7 @@ some attention.
 
 ##### Install dependencies
 - `pip install remarshal`
-- `npm install stylus pug-cli -g`
+- `npm install stylus pug-cli`
 
 ##### Build extension files
 - `make manifest.json`
