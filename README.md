@@ -49,6 +49,20 @@ with these additional goals in mind:
 [bugzilla#1320332](https://bugzilla.mozilla.org/show_bug.cgi?id=1320332) receive
 some attention.
 
+## How to build
+##### Prerequisites 
+- Python + pip
+- Node.js + npm
+- GNU make utility
+
+##### Install dependencies
+- `pip install remarshal`
+- `npm install stylus pug-cli -g`
+
+##### Build extension files
+- `make manifest.json`
+- `make panel.css`
+- `make panel.html`
 
 # License
 Released under the GNU Public License v3
