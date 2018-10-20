@@ -54,6 +54,7 @@ function create_li(tab) {
     }
     if (tab.active) {
         unhighlight_current_tab()
+        highlight_tab(tab.id)
         current_tab_id = tab.id
     }
 
@@ -102,13 +103,20 @@ function scroll_into_view($el) {
     }
 }
 
-function fill_content() {
+function tab_matched($tab, $query) {
+    var re = new RegExp($query, 'i')
+    return $query == '' || (re.test($tab.title) || re.test($tab.url))
+}
+
+function fill_content($filter) {
     browser.tabs.query({windowId: window_id}).then((window_tabs) => {
         $container.textContent = ""
         tabs_by_id = {}
         window_tabs.forEach((tab) => {
-            var li = create_li(tab)
-            $container.appendChild(li)
+            if (tab_matched(tab, $filter)) {
+                var li = create_li(tab)
+                $container.appendChild(li)
+            }
         })
         let $current_tab = tabs_by_id[current_tab_id]
         scroll_into_view($current_tab)
@@ -210,11 +218,19 @@ function on_moved_tab(tabId, opts) {
 }
 
 function unhighlight_current_tab() {
-    if (current_tab_id) {
-        //console.info("unhighlight_current_tab", current_tab_id)
-        var $tab = tabs_by_id[current_tab_id]
+    var $tab = tabs_by_id[current_tab_id]
+    if ($tab) {
         $tab.classList.remove("highlighted")
     }
+}
+
+function highlight_tab(tab_id) {
+    var $tab = tabs_by_id[tab_id]
+    if (!$tab) {
+        return
+    }
+    $tab.classList.add("highlighted")
+    $tab.classList.add("loaded")
 }
 
 function change_current_tab(active_info) {
@@ -234,7 +250,7 @@ function change_current_tab(active_info) {
     // current active tab
     var $tab = tabs_by_id[new_current_id]
     if (!$tab) {
-        //console.error("ABORT change_current_tab")
+        // console.error("ABORT change_current_tab")
         //console.info("new:", new_current_id, tabs_by_id[new_current_id])
         //console.info("old:", current_tab_id, tabs_by_id[current_tab_id])
         return  // abort, maybe a tab detached or something
@@ -242,9 +258,7 @@ function change_current_tab(active_info) {
 
     // previous active tab
     unhighlight_current_tab()
-
-    $tab.classList.add("highlighted")
-    $tab.classList.add("loaded")
+    highlight_tab(new_current_id)
     scroll_into_view($tab)
 
     current_tab_id = new_current_id
@@ -354,7 +368,9 @@ function on_drag_start(e) {
 // position the dotted line indicating a drop where would insert the tab
 function on_drag_enter(e) {
     e.preventDefault()
-    var line_y = window.scrollY
+    var content = document.querySelector('#content')
+    var line_y = window.scrollY - content.offsetTop + content.scrollTop
+    
     if (this === $emptyspace) {
         let $tabs = $container.querySelectorAll(".tab")
         let sizing_info = $tabs[$tabs.length - 1].getBoundingClientRect()
@@ -410,3 +426,13 @@ function on_drag_end() {
 $emptyspace.addEventListener("dragenter", on_drag_enter)
 $emptyspace.addEventListener("dragover", on_drag_over)
 $emptyspace.addEventListener("drop", on_drop)
+
+//-------------------- Search tabs --------------------
+//=====================================================
+function search_tabs(e) {
+    e.preventDefault()
+    fill_content($search_field.value)
+}
+
+const $search_field = document.querySelector("#searchtext")
+$search_field.addEventListener("input", search_tabs)
