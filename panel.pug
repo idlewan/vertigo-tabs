@@ -4,8 +4,12 @@ html
         meta(charset="utf-8")
         link(rel="stylesheet" href="panel.css")
     body
-        #drag-line
-        ul#tabs
-        #empty-space
+        div.browser-style#searchbox
+            input(type='text' placeholder='Search tabs..' size=1)#searchtext
+            
+        div#content
+            #drag-line
+            ul#tabs
+            #empty-space
 
         script(src="panel.js")
