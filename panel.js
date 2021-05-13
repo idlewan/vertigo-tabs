@@ -3,7 +3,6 @@ const $create = document.createElement.bind(document)
 document.addEventListener("contextmenu", event => event.preventDefault())
 const $container = document.querySelector("#tabs")
 var window_id
-var loaded = {}
 var current_tab_id = null
 var tabs_by_id = {}
 var detached_tabs = {}   // maps which detached tab refers to which real tab
@@ -47,9 +46,8 @@ function create_li(tab) {
     li.className = "tab"
     if (tab.highlighted) {
         li.classList.add("highlighted")
-        loaded[tab.id] = true
     }
-    if (loaded[tab.id]) {
+    if (!tab.discarded) {
         li.classList.add("loaded")
     }
     if (tab.active) {
@@ -189,7 +187,6 @@ function on_create_tab(tab) {
     if (tab.highlighted) {
         unhighlight_current_tab()
     }
-    loaded[tab.id] = true
     var li = create_li(tab)
     insert_tab_at(tab.index, li)
     tabs_by_id[tab.id] = li
@@ -223,7 +220,6 @@ function change_current_tab(active_info) {
     }
 
     let new_current_id = active_info.tabId
-    loaded[new_current_id] = true
 
     if (detached_tabs[new_current_id]) {
         //console.info("USING DETACHED TAB: from", new_current_id,

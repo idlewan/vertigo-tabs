@@ -38,9 +38,6 @@ with these additional goals in mind:
   however it might be a desirable feature in the future. Waiting on
   [bugzilla#1238314](https://bugzilla.mozilla.org/show_bug.cgi?id=1238314) and
   [bugzilla#1322060](https://bugzilla.mozilla.org/show_bug.cgi?id=1322060).
-- Proper "tab is loaded/unloaded" support. Currently, the extension only tracks
-  the loading of tabs from the moment the extension is loaded, so tabs that
-  have been loaded before but not selected appear as unloaded.
 - Animation of the "loading" favicon. CPU usage seems to go up by a substantial
   amount when having CSS animation displaying, so as long as this stays true,
   the loading favicon will not be spinning.
