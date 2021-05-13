@@ -3,7 +3,7 @@ all: manifest.json panel.js panel.html panel.css loading.png \
 	apack vertigo_tabs.zip $^
 
 manifest.json: manifest.yaml
-	remarshal -if yaml -of json --indent-json $< > $@
+	yq . $< > $@
 
 panel.html: panel.pug
 	pug $<
