@@ -13,6 +13,23 @@ body
   font menu
   display flex
 
+@media (prefers-color-scheme: dark)
+  // Windows doesn't seem to support pulling dark theme background colors
+  // let's invert foreground/background colors then for windows only
+  // if the user wants a dark theme
+  body.windows
+    background-color $text-color
+    color $bg-color
+
+    .loaded > span
+      color $bg-color
+
+    .audible > .soundicon
+      background-color $bg-color
+
+    #drag-line
+      border-top dashed 1px $bg-color
+
 #tabs
   margin 0
   padding 0
@@ -22,7 +39,6 @@ body
   width 100%
   padding 1px 6px
   list-style none
-  //opacity 0.9
 
 .favicon
   width 16px
