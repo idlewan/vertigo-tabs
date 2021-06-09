@@ -2,7 +2,7 @@ manifest_version: 2
 name: Vertigo Tabs
 author: Erwan Ameil
 homepage_url: https://github.com/idlewan/vertigo-tabs
-version: '1.4'
+version: '1.5'
 
 description: >
   Vertical tab bar for Firefox 57+
