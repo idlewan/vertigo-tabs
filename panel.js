@@ -1,7 +1,7 @@
 const $create = document.createElement.bind(document)
 
 document.addEventListener("contextmenu", event => event.preventDefault())
-if (navigator.platform == "Win32") document.body.className.add("windows")
+if (navigator.platform == "Win32") document.body.classList.add("windows")
 
 const $container = document.querySelector("#tabs")
 var window_id
