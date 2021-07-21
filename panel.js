@@ -3,6 +3,13 @@ const $create = document.createElement.bind(document)
 document.addEventListener("contextmenu", event => event.preventDefault())
 if (navigator.platform == "Win32") document.body.classList.add("windows")
 
+browser.runtime.getBrowserInfo().then(browserInfo => {
+    browserVersion = parseFloat(browserInfo.version)
+    if (navigator.platform.startsWith("Linux") && browserVersion >= 90) {
+        document.body.classList.add("linux90")
+    }
+})
+
 const $container = document.querySelector("#tabs")
 var window_id
 var current_tab_id = null
