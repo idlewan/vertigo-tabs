@@ -5,7 +5,9 @@ if (navigator.platform == "Win32") document.body.classList.add("windows")
 
 browser.runtime.getBrowserInfo().then(browserInfo => {
     browserVersion = parseFloat(browserInfo.version)
-    if (navigator.platform.startsWith("Linux") && browserVersion >= 90 && browserVersion < 92) {
+    if (navigator.platform.startsWith("Linux") &&
+        (browserVersion == 90 || browserVersion == 91 || browserVersion == 94)
+    ) {
         document.body.classList.add("linux90")
     }
 })

@@ -17,10 +17,9 @@ body
   // Windows doesn't seem to support pulling dark theme background colors
   // let's invert foreground/background colors then for windows only
   // if the user wants a dark theme
-  // Since Firefox 90 on Linux/GTK, a regression made it so that
-  // dark theme colors have been replaced by light theme colors in addons.
-  // Use the same workaround for now until a fix appears
-  // in a release build of Firefox
+  // Firefox 90,91,94 on Linux/GTK also have a regression for addons/sidebars where
+  // dark theme colors have been forcebly replaced by light theme colors.
+  // Use the same workaround for these versions.
   body.windows
   body.linux90
     background-color $text-color
