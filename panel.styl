@@ -14,13 +14,9 @@ body
   display flex
 
 @media (prefers-color-scheme: dark)
-  // Windows doesn't seem to support pulling dark theme background colors
-  // let's invert foreground/background colors then for windows only
-  // if the user wants a dark theme
-  // Firefox 90,91,94 on Linux/GTK also have a regression for addons/sidebars where
+  // Firefox 90,91,94,95 on Linux/GTK have a regression for addons/sidebars where
   // dark theme colors have been forcebly replaced by light theme colors.
-  // Use the same workaround for these versions.
-  body.windows
+  // Use a workaround for these versions (invert foreground/background colors)
   body.linux90
     background-color $text-color
     color $bg-color
