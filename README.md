@@ -2,7 +2,7 @@
 This WebExtension is a vertical tab list using the new Sidebar API in Firefox.
 It has not been tested on other browsers.
 
-https://addons.mozilla.org/en-US/firefox/addon/vertigo-tabs/
+https://addons.mozilla.org/firefox/addon/vertigo-tabs/
 
 ![screenshot_light](screenshot_light_small.png "Screenshot light") ![screenshot_dark](screenshot_dark_small.png "Screenshot dark")
 
