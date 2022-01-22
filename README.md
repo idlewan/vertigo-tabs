@@ -2,7 +2,7 @@
 This Firefox WebExtension is a vertical tab list using the Sidebar API.
 It has not been tested on other browsers.
 
-https://addons.mozilla.org/en-US/firefox/addon/vertigo-tabs/
+https://addons.mozilla.org/firefox/addon/vertigo-tabs/
 
   **Note**: with **GTK on Linux**, you now need to enable `widget.content.allow-gtk-dark-theme`
   (in `about:config`) for the right colors to be passed to the extensions and
