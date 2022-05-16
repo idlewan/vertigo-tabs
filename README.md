@@ -1,5 +1,5 @@
 # ![icon](icon48.png "Vertigo tabs") Vertigo tabs
-This WebExtension is a vertical tab list using the new Sidebar API in Firefox.
+This Firefox WebExtension is a vertical tab list using the Sidebar API.
 It has not been tested on other browsers.
 
 https://addons.mozilla.org/en-US/firefox/addon/vertigo-tabs/
@@ -14,7 +14,7 @@ with these additional goals in mind:
 - respect the user's system theme if possible (use [system colors,
   system font sizes](
   https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#System_Colors)).
-  Note: with GTK, you now need to enable `widget.content.allow-gtk-dark-theme`
+  **Note**: with **GTK on Linux**, you now need to enable `widget.content.allow-gtk-dark-theme`
   (in `about:config`) for the right colors to be passed to the extensions and
   match with your theme.
 - shortest/cleanest code wins. Legacy Addons based on XUL and non-standard APIs
@@ -35,8 +35,8 @@ with these additional goals in mind:
   [bugzilla#1332447](https://bugzilla.mozilla.org/show_bug.cgi?id=1332447).
   Current workaround: add `#TabsToolbar {visibility: collapse;}` to
   `[your_ffox_profile_dir]/chrome/userChrome.css`
-- Tab tree. Having a tab tree is not currently possible
-  (missing [openerTabId support in firefox](
+- Tab tree. Having a tab tree wasn't possible when the extension was first
+- written (missing [openerTabId support in firefox](
   https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/Tab#Browser_compatibility)),
   however it might be a desirable feature in the future. Waiting on
   [bugzilla#1238314](https://bugzilla.mozilla.org/show_bug.cgi?id=1238314) and
