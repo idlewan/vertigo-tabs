@@ -4,6 +4,10 @@ It has not been tested on other browsers.
 
 https://addons.mozilla.org/en-US/firefox/addon/vertigo-tabs/
 
+  **Note**: with **GTK on Linux**, you now need to enable `widget.content.allow-gtk-dark-theme`
+  (in `about:config`) for the right colors to be passed to the extensions and
+  match with your theme.
+
 ![screenshot_light](screenshot_light_small.png "Screenshot light") ![screenshot_dark](screenshot_dark_small.png "Screenshot dark")
 
 # Goals
@@ -14,9 +18,6 @@ with these additional goals in mind:
 - respect the user's system theme if possible (use [system colors,
   system font sizes](
   https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#System_Colors)).
-  **Note**: with **GTK on Linux**, you now need to enable `widget.content.allow-gtk-dark-theme`
-  (in `about:config`) for the right colors to be passed to the extensions and
-  match with your theme.
 - shortest/cleanest code wins. Legacy Addons based on XUL and non-standard APIs
   aren't usually either short or pleasurable to read, so let's take advantage
   of the WebExtension reboot to try to make it readable from the start.
