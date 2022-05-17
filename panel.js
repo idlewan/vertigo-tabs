@@ -177,9 +177,10 @@ function on_update_tab(tabId, changes, state) {
         }
     }
 
-    if (changes.status == "complete") {
+    if (state.status == "complete") {
         if (state.favIconUrl) {
             favicon.children[0].src = state.favIconUrl
+            favicon.classList.remove("no-favicon")
         } else {
             favicon.classList.add("no-favicon")
         }
